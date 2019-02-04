@@ -47,13 +47,10 @@ def is_valid_order(order):
     """
     Check if an order exists in the shop.
     """
-    all_shop = menu + original_flavors + signature_flavors
-    for i in order:
-        for f in all_shop:
-            if i != f:
-                return False
-            else:
-                return True
+    if order in menu or order in original_flavors or order in signature_flavors:
+        return True
+    else:
+        return False
 
 
 
@@ -63,26 +60,30 @@ def get_order():
     """
     order_list = []
     print ("What's your order? (Enter the exact spelling of the item you want. Type 'Exit' to end your order.)")
-    thewhile = True
 
-    while thewhile == True:
+    while True:
         order = input()
-        if order != "exit":
+        
+        if is_valid_order(order) == True:
             order_list.append(order)
+        elif order == "exit":
+            break
         else:
-            thewhile = False
-
+            print("Your item is invalid, Please order something from the menu.")
 
     return order_list
+
 
 
 def accept_credit_card(total):
     """
     Return whether an order is eligible for credit card payment.
     """
-    print ("That'll be KD %s" % total)
-    print ("This order is eligible for credit card payment.")
-    print ("Thank you for shopping at %s" % cupcake_shop_name)
+    if total > 5:
+        print ("This order is eligible for credit card payment.")
+    else:
+        print ("The order is not eligible for credit card payment.")    
+    
 
 
 def get_total_price(order_list):
@@ -111,6 +112,10 @@ def print_order(order_list):
     print()
     print("Your order is: ")
     for order in order_list:
-        "- %s" % order 
+        print ("- %s" % order) 
+    total = get_total_price(order_list)
+    print ("That'll be KD %s" % total)
+    
+    accept_credit_card(total)
 
-    accept_credit_card(get_total_price(order_list))
+    print ("Thank you for shopping at %s" % cupcake_shop_name)
